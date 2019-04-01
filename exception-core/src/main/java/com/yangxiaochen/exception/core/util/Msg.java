@@ -1,4 +1,4 @@
-package com.yangxiaochen.exception.core;
+package com.yangxiaochen.exception.core.util;
 
 import org.slf4j.helpers.MessageFormatter;
 
