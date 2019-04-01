@@ -1,0 +1,5 @@
+rootProject.name = 'exception'
+include 'exception-core'
+include 'exception-spring-mvc'
+include 'exception-dubbo'
+
