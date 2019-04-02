@@ -12,6 +12,8 @@ buildscript {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: "maven-publish"
+
     group 'com.yangxiaochen'
     version '1.0.0-SNAPSHOT'
     
@@ -29,6 +31,46 @@ subprojects {
 
         testCompile group: 'junit', name: 'junit', version: '4.12'
         testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.1'
+    }
+
+
+
+
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allJava
+    }
+    publishing {
+        publications {
+            oss(MavenPublication) {
+                pom.withXml {
+                    Node node = asNode()
+                    new Node(node, "description", "一个分布式锁封装")
+                }
+                from components.java
+                artifact sourceJar {
+                    classifier "sources"
+                }
+
+            }
+        }
+        repositories {
+            maven {
+                name "snapshot"
+                url "https://oss.sonatype.org/content/repositories/snapshots"
+                credentials {
+                    username property('oss.publish.username')
+                    password property('oss.publish.password')
+                }
+            }
+            maven {
+                name "release"
+                url "https://oss.sonatype.org/content/repositories/releases"
+                credentials {
+                    username property('oss.publish.username')
+                    password property('oss.publish.password')
+                }
+            }
+        }
     }
 }
 
