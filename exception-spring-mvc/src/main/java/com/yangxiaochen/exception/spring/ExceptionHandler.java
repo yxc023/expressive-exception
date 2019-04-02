@@ -1,33 +1,43 @@
 package com.yangxiaochen.exception.spring;
 
-import com.yangxiaochen.exception.spring.impl.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yangxiaochen.exception.spring.impl.DefaultLogAction;
+import com.yangxiaochen.exception.spring.impl.JsonResultErrorViewResolver;
+import com.yangxiaochen.exception.spring.impl.SpringMvcExceptionTranslator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author yangxiaochen
+ */
+@SuppressWarnings("ALL")
+@Slf4j
 public class ExceptionHandler implements HandlerExceptionResolver, Ordered {
-    private static Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
-    private ErrorViewResolver apiErrorViewResoler = new DefaultApiErrorViewResolver();
-    private ErrorViewResolver pageErrorViewResoler = new DefaultPageErrorViewResolver();
+    private ErrorViewResolver errorViewResolver = new JsonResultErrorViewResolver();
     private LogAction logAction = new DefaultLogAction();
-    private ApiRequestChecker apiRequestChecker = new DefaultApiRequestChecker();
-    private List<ExceptionTranslator> exceptionTranslators = Arrays.asList(new SpringMvcExceptionTranslator());
-    private List<String> pathPrefixs = Arrays.asList("/");
+    private HandleChecker handleChecker = request -> true;
+    private List<ExceptionTranslator> exceptionTranslators;
+    private List<String> pathPrefixs;
 
 
-    /**
-     * 最优先
-     *
-     * @return
-     */
+    public ExceptionHandler() {
+        List<ExceptionTranslator> exceptionTranslators = new ArrayList<>();
+        exceptionTranslators.add(new SpringMvcExceptionTranslator());
+
+        List<String> pathPrefixs = new ArrayList<>();
+        pathPrefixs.add("/");
+
+        this.exceptionTranslators = exceptionTranslators;
+        this.pathPrefixs = pathPrefixs;
+    }
+
     @Override
     public int getOrder() {
         return Ordered.HIGHEST_PRECEDENCE;
@@ -35,7 +45,7 @@ public class ExceptionHandler implements HandlerExceptionResolver, Ordered {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if (pathPrefixs.stream().allMatch(prefix -> !request.getRequestURI().startsWith(prefix))) {
+        if (pathPrefixs.stream().noneMatch(prefix -> request.getRequestURI().startsWith(prefix))) {
             return null;
         }
 
@@ -43,26 +53,12 @@ public class ExceptionHandler implements HandlerExceptionResolver, Ordered {
         if (ex == null) {
             return null;
         }
-
         logAction.log(request, ex);
 
-        ModelAndView mv;
-        if (apiRequestChecker.isApiRequest(request)) {
-            mv = apiErrorViewResoler.resolve(request, response, ex);
-        } else {
-            mv = pageErrorViewResoler.resolve(request, response, ex);
-        }
-
-        return mv;
+        return errorViewResolver.resolve(request, response, ex);
     }
 
 
-    /**
-     * 装饰一些不可读但最好需要提示的
-     *
-     * @param e
-     * @return
-     */
     protected Exception translateException(Exception e, HttpServletRequest request) {
         for (ExceptionTranslator exceptionTranslator : exceptionTranslators) {
             Exception translatedException = exceptionTranslator.translate(e, request);
@@ -74,20 +70,12 @@ public class ExceptionHandler implements HandlerExceptionResolver, Ordered {
     }
 
 
-    public ErrorViewResolver getApiErrorViewResoler() {
-        return apiErrorViewResoler;
+    public ErrorViewResolver getErrorViewResolver() {
+        return errorViewResolver;
     }
 
-    public void setApiErrorViewResoler(ErrorViewResolver apiErrorViewResoler) {
-        this.apiErrorViewResoler = apiErrorViewResoler;
-    }
-
-    public ErrorViewResolver getPageErrorViewResoler() {
-        return pageErrorViewResoler;
-    }
-
-    public void setPageErrorViewResoler(ErrorViewResolver pageErrorViewResoler) {
-        this.pageErrorViewResoler = pageErrorViewResoler;
+    public void setErrorViewResolver(ErrorViewResolver errorViewResolver) {
+        this.errorViewResolver = errorViewResolver;
     }
 
     public LogAction getLogAction() {
@@ -98,12 +86,12 @@ public class ExceptionHandler implements HandlerExceptionResolver, Ordered {
         this.logAction = logAction;
     }
 
-    public ApiRequestChecker getApiRequestChecker() {
-        return apiRequestChecker;
+    public HandleChecker getHandleChecker() {
+        return handleChecker;
     }
 
-    public void setApiRequestChecker(ApiRequestChecker apiRequestChecker) {
-        this.apiRequestChecker = apiRequestChecker;
+    public void setHandleChecker(HandleChecker handleChecker) {
+        this.handleChecker = handleChecker;
     }
 
     public List<ExceptionTranslator> getExceptionTranslators() {

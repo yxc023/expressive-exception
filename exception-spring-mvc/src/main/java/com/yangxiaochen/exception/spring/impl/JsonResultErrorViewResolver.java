@@ -1,8 +1,11 @@
 package com.yangxiaochen.exception.spring.impl;
 
+import com.yangxiaochen.exception.core.HasCode;
+import com.yangxiaochen.exception.core.HasData;
+import com.yangxiaochen.exception.core.HasTip;
 import com.yangxiaochen.exception.spring.ErrorViewResolver;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,24 +15,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class DefaultPageErrorViewResolver implements ErrorViewResolver {
+/**
+ * @author yangxiaochen
+ */
+public class JsonResultErrorViewResolver implements ErrorViewResolver {
 
     private boolean printStack = false;
+    private MappingJackson2JsonView view = new MappingJackson2JsonView();
 
     @Override
     public ModelAndView resolve(HttpServletRequest request, HttpServletResponse response, Exception ex) {
-        ModelAndView mv = new ModelAndView("/default-exception-error");
-        mv.addObject("error", ex.getMessage());
-        mv.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        mv.addObject("path", request.getRequestURI());
-        mv.addObject("exception", ex.getClass().getName());
-        mv.addObject("message", ex.getLocalizedMessage());
-        if (printStack) {
-            mv.addObject("trace", getStackFrames(ex));
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("msg", ex.getMessage());
+        if (ex instanceof HasCode) {
+            mv.addObject("code", ((HasCode) ex).getCode());
         }
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        if (ex instanceof HasTip) {
+            mv.addObject("tip", ((HasTip) ex).getTip());
+        }
+        if (ex instanceof HasData) {
+            mv.addObject("data", ((HasData) ex).getData());
+        }
+        if (printStack) {
+            mv.addObject("stackTrace", getStackFrames(ex));
+        }
+        mv.setView(view);
         return mv;
     }
+
 
     private String[] getStackFrames(Throwable e) {
         final StringWriter sw = new StringWriter();
@@ -43,6 +56,15 @@ public class DefaultPageErrorViewResolver implements ErrorViewResolver {
         while (frames.hasMoreTokens()) {
             list.add(frames.nextToken());
         }
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
+    }
+
+
+    public boolean isPrintStack() {
+        return printStack;
+    }
+
+    public void setPrintStack(boolean printStack) {
+        this.printStack = printStack;
     }
 }

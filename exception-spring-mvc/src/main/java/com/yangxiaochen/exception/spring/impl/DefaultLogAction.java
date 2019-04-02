@@ -7,14 +7,13 @@ import com.yangxiaochen.exception.spring.LogAction;
 import org.apache.catalina.connector.ClientAbortException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class DefaultLogAction implements LogAction {
 
-    private static Logger logger = LoggerFactory.getLogger(DefaultApiErrorViewResolver.class);
+    private static Logger logger = LoggerFactory.getLogger(DefaultLogAction.class);
 
     @Override
     public void log(HttpServletRequest request, Exception ex) {
