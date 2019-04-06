@@ -9,6 +9,7 @@ public abstract class BaseRichException extends Exception implements HasTip, Has
     private Object data;
 
     public BaseRichException() {
+        super();
     }
 
     public BaseRichException(String message) {
@@ -59,14 +60,4 @@ public abstract class BaseRichException extends Exception implements HasTip, Has
     public String getCode() {
         return code;
     }
-
-    @Override
-    public String getLocalizedMessage() {
-        if (tip == null) {
-            return super.getLocalizedMessage();
-        } else {
-            return super.getLocalizedMessage() + " | tip: " + tip;
-        }
-    }
-
 }

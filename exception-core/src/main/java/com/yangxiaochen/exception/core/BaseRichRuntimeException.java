@@ -9,6 +9,7 @@ public abstract class BaseRichRuntimeException extends RuntimeException implemen
     private Object data;
 
     public BaseRichRuntimeException() {
+        super();
     }
 
     public BaseRichRuntimeException(String message) {
@@ -58,20 +59,6 @@ public abstract class BaseRichRuntimeException extends RuntimeException implemen
     @Override
     public String getCode() {
         return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return "[" + this.code + "] " + super.getMessage();
-    }
-
-    @Override
-    public String getLocalizedMessage() {
-        if (tip == null) {
-            return super.getLocalizedMessage();
-        } else {
-            return super.getLocalizedMessage() + " | tip: " + tip;
-        }
     }
 
 }
