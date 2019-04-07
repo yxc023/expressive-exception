@@ -1,3 +1,204 @@
-# A rich exception lib
+= A Rich Exception Library
 
-在业务项目实践中, 通常需要表达能力更强的异常. 本项目提供了一套表达能力更强, 包含信息更多的一套异常接口.
+一个能够包含更多信息的异常基础库. 是一套异常设计和处理的方法论的落地.
+
+== 动机
+在业务项目实践中, 异常经常用来传递一些业务错误或者警告.
+
+通常, 这些业务错误和警告, 经常要包含更多的信息, 比如错误编码, 错误消息. 有时为了给用户更好体验, 还会放入一些便于用户阅读的消息. 甚至, 还会需要一些数据.
+
+== 设计意图
+
+在多个业务系统实践中, 我做了一个总结, 一个好用的异常, 要包含以下几个数据:
+
+`message`:: 异常都会包含的消息
+`code`:: 异常编码
+`tip`:: 异常提示
+`data`:: 可选, 异常携带的数据
+`level`:: 可选, 异常级别
+
+下面对每一项进行详细说明.
+
+=== message
+
+通常意义下的 exception message, 通常是对异常的描述. 比如当要删除一个订单, 但给的订单号并不存在时:
+
+----
+Order not found, id: 1001
+----
+
+通常是英文, 且格式标准专业, 包含了异常相关足够的信息.
+
+=== code
+
+因为业务比较复杂, 异常情况也很多, 我们基本不会对每一种异常设计一个异常类型. 比如在处理订单操作时, 我们只定义一种异常类型: `OrderOperationException`.
+
+那么更细节的异常我们可以通过编码来表示:
+
+----
+ORDER_NOT_FOUND - 订单不存在
+ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
+...
+----
+
+=== tip
+
+`tip` 和 `message` 很像, 都是用来表达异常的信息. `tip` 的设计意图在于##提供用户可读的异常信息##. 比如
+
+----
+要操作的订单号[1001]不存在.
+订单[1001]已经支付过了.
+----
+
+=== data
+
+`data` 其实并不常用, 场景比较少. 只是在发生异常时需要返回一些关联数据. 举一个场景:
+
+当用户购买一个比较抢手的产品时, 有一个购买限制: 一个用户下单后必须支付才能下第二单.
+
+那么, 当用户触发这个限制时, 返回的异常中要包含未支付的订单号, 再由统一的异常处理转换成带有 data 的异常返回信息.
+
+=== level
+
+异常为什么要分级? 因为我在业务逻辑中, 所有不符合最常规业务逻辑流程的, 都使用异常来返回.
+
+那么有的异常可能并不算是错误. 比如登录时账号密码不匹配, 这并不是系统 bug 引起的错误, 也不需要记录 error 日志, 甚至报警.
+
+而有的, 比如逻辑执行中, 某个数据一定应该存在的, 结果没有查询到, 代表着数据完整性异常, 那么这是真真正正的 error.
+
+而其他的, 甚至还有说偶尔异常没问题, 大量异常有问题的. 比如客户端断开连接, 偶尔出现很正常, 但大量出现就是有问题的.
+
+所以在设计中, 默认将异常 level 分为了两类:
+
+* SERVICE_LEVEL
+* ERROR_LEVEL
+
+== USAGE
+
+##ONLY SNAPSHOT PROVIDE NOW.##
+
+=== 引入
+----
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public"
+    }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+
+dependencies {
+    compile 'com.yangxiaochen:exception-core:1.0.0-SNAPSHOT'
+}
+----
+
+=== 使用
+
+在 `exception-core` 中, 提供了 `HasTip`, `HasCode`, `HasData`, `HasLevel` 几个接口, 你需要定义自己的异常类时:
+----
+public class MyException extends Exception implements HasTip, HasCode, HasData, HasLevel {
+    ...
+}
+----
+
+为了方便定义异常类, 提供了两个抽象类 `BaseRichException`, `BaseRichRuntimeException`, 可以直接继承这两个类:
+
+----
+public class MyException extends BaseRichException {
+    ...
+}
+----
+
+=== 拓展异常 level
+
+可以通过实现 `ExceptionLevel` 来定义新的异常 level.
+
+== 如何处理异常
+
+##异常定义只是一个方面,  如何看待, 解释, 处理我们定义的异常是另一个方面.##
+
+=== spring mvc
+
+----
+dependencies {
+    compile 'com.yangxiaochen:exception-spring-mvc:1.0.0-SNAPSHOT'
+}
+----
+
+提供了一个默认的 `ExceptionHandler`, 来统一处理异常, 其核心异常处理方法实现如下:
+
+----
+public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    if (pathPrefixs.stream().noneMatch(prefix -> request.getRequestURI().startsWith(prefix))) {
+        return null;
+    }
+
+    ex = translateException(ex, request);
+    if (ex == null) {
+        return null;
+    }
+    logAction.log(request, ex);
+
+    return errorViewResolver.resolve(request, response, ex);
+}
+----
+
+加入到 spring mvc 框架中实现异常的统一处理:
+
+----
+@Configuration
+public class MvcConfig implements WebMvcConfigurer {
+
+    private boolean printStack = false;
+    private MappingJackson2JsonView view = new MappingJackson2JsonView();
+
+    @Override
+    public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
+        ExceptionHandler exceptionHandler = new ExceptionHandler();
+        resolvers.add(0, exceptionHandler);
+    }
+}
+----
+
+可以对 `ExceptionHandler` 的处理行为进行定制:
+
+----
+exceptionHandler.setPathPrefixs(Arrays.asList("/web/", "/api/"));
+exceptionHandler.setErrorViewResolver((request, response, ex) -> {
+    ModelAndView mv = new ModelAndView();
+    mv.addObject("msg", ex.getMessage());
+    mv.addObject("success", false);
+    if (ex instanceof HasCode) {
+        mv.addObject("code", ((HasCode) ex).getCode());
+        if (((HasCode) ex).getCode() == null) {
+            mv.addObject("code", 0);
+        }
+    }
+    if (ex instanceof HasTip) {
+        mv.addObject("tip", ((HasTip) ex).getTip());
+        if (ex.getMessage() == null) {
+            mv.addObject("msg", ((HasTip) ex).getTip());
+            mv.addObject("message", ((HasTip) ex).getTip());
+        }
+    }
+    if (ex instanceof HasData) {
+        mv.addObject("data", ((HasData) ex).getData());
+    }
+    if (printStack) {
+        mv.addObject("stackTrace", getStackFrames(ex));
+    }
+    mv.setView(view);
+    return mv;
+});
+----
+
+=== dubbo
+
+TBD.
+
+== 意见收集
+
+这个项目即是一个类库, 更是一个异常设计和处理的方法论, 类库是方便方法论落地的措施.
+
+如果你有不同的想法和意见, 欢迎 issue 交流.
