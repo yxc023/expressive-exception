@@ -1,4 +1,4 @@
-package com.yangxiaochen.exception.spring;
+package com.yangxiaochen.exception.spring.impl;
 
 import com.yangxiaochen.exception.core.BaseRichRuntimeException;
 

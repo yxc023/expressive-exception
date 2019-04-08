@@ -1,7 +1,6 @@
 package com.yangxiaochen.exception.spring.impl;
 
 import com.yangxiaochen.exception.spring.ExceptionTranslator;
-import com.yangxiaochen.exception.spring.WebApiException;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
