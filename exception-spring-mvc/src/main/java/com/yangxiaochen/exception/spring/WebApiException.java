@@ -1,9 +1,11 @@
 package com.yangxiaochen.exception.spring;
 
+import com.yangxiaochen.exception.core.BaseRichRuntimeException;
+
 /**
  * @author yangxiaochen
  */
-public class WebApiException extends RuntimeException {
+public class WebApiException extends BaseRichRuntimeException {
     public WebApiException() {
     }
 
