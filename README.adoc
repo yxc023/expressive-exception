@@ -1,4 +1,9 @@
 = A Rich Exception Library
+杨晓辰
+2019-04-14
+:toc:
+:toclevels: 4
+:icons: font
 
 一个能够包含更多信息的异常基础库. 是一套异常设计和处理的方法论的落地.
 
