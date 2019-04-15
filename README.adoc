@@ -39,6 +39,7 @@ Order not found, id: 1001
 SUCCESS - 成功都是相同的
 
 // 而失败各有不同
+FAILURE - 通用的失败编码
 ORDER_NOT_FOUND - 订单不存在
 ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 ...
