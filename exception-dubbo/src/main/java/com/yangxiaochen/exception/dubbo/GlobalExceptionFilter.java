@@ -8,7 +8,6 @@ import com.yangxiaochen.exception.core.HasCode;
 import com.yangxiaochen.exception.core.HasLevel;
 import com.yangxiaochen.exception.core.HasTip;
 import com.yangxiaochen.exception.core.level.ExceptionLevels;
-import org.apache.dubbo.rpc.AppResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +22,13 @@ public class GlobalExceptionFilter implements Filter {
 
     public static final String PARAMETER_INVALID = "PARAMETER_INVALID";
     public static final String SYSTEM_ERROR = "SYSTEM_ERROR";
-    private Gson gson = new Gson();
+
+    Gson gson = new Gson();
+
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws ApiException {
         Result result = invoker.invoke(invocation);
-        if (result instanceof AppResponse && result.hasException()) {
+        if (result instanceof RpcResult && result.hasException()) {
             Throwable exception = result.getException();
             Throwable transformedException;
             if (exception instanceof ValidationException) {
@@ -49,7 +50,7 @@ public class GlobalExceptionFilter implements Filter {
                             .tip("参数校验失败");
                     transformedException.setStackTrace(exception.getStackTrace());
                 }
-                result.setException(transformedException);
+                ((RpcResult) result).setException(transformedException);
                 return result;
             }
 
@@ -80,7 +81,7 @@ public class GlobalExceptionFilter implements Filter {
 
             transformedException = new ApiException(exception.getMessage()).code(code).tip(tip);
             transformedException.setStackTrace(exception.getStackTrace());
-            result.setException(transformedException);
+            ((RpcResult) result).setException(transformedException);
             return result;
         }
         return result;
