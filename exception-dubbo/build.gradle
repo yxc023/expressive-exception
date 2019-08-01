@@ -1,5 +1,5 @@
 
-version '2.7.3-SNAPSHOT'
+version '2.6.6-SNAPSHOT'
 
 dependencies {
     compile group: 'com.alibaba', name: 'dubbo', version: '2.6.6'
