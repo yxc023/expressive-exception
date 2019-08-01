@@ -1,6 +1,5 @@
 package com.yangxiaochen.exception.test.application;
 
-import com.yangxiaochen.exception.test.application.Result;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 

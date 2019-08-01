@@ -1,16 +1,9 @@
-plugins {
-    id 'java'
-}
 
-group 'com.yangxiaochen'
-version '1.0.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
+version '2.7.3-SNAPSHOT'
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.apache.dubbo', name: 'dubbo', version: '2.7.3'
+    compile project(":exception-core")
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
 }

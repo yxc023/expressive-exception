@@ -57,12 +57,10 @@ public class SpringMvcExceptionTranslator implements ExceptionTranslator {
             } else {
                 e = new WebApiException("文件上传错误：", e);
             }
-//        } else if (e instanceof AuthException) {
-//            e = new WebApiException("权限未通过:" + e.getMessage(), e);
         } else if (e instanceof IllegalArgumentException) {
             e = new WebApiException("请求数据验证有错误：" + e.getMessage(), e);
         } else if (e instanceof ServletException) {
-            // 其他的 servlet 异常, 不错处理, 由 spring 处理
+            // 其他的 servlet 异常, 不做处理, 由 spring 处理
             return null;
         }
         return e;

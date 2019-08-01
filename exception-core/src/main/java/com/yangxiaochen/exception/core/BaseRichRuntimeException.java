@@ -50,9 +50,6 @@ public abstract class BaseRichRuntimeException extends RuntimeException implemen
 
     @Override
     public String getTip() {
-        if (tip == null) {
-            return getMessage();
-        }
         return tip;
     }
 
