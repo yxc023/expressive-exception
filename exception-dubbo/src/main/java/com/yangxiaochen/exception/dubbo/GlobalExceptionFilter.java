@@ -1,14 +1,15 @@
 package com.yangxiaochen.exception.dubbo;
 
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.extension.Activate;
-import com.alibaba.dubbo.rpc.*;
+
+
 import com.google.gson.Gson;
 import com.yangxiaochen.exception.core.HasCode;
 import com.yangxiaochen.exception.core.HasLevel;
 import com.yangxiaochen.exception.core.HasTip;
 import com.yangxiaochen.exception.core.level.ExceptionLevels;
-import org.apache.dubbo.rpc.AppResponse;
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.rpc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.Set;
 
-@Activate(group = Constants.PROVIDER)
+@Activate(group = CommonConstants.PROVIDER)
 public class GlobalExceptionFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionFilter.class);
 
