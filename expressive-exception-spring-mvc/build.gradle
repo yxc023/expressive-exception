@@ -1,12 +1,12 @@
 
 
-version '2.1.1-SNAPSHOT'
+version '1.1.0-SNAPSHOT'
 
 description = "Exception handler for spring boot 2.1.* (spring mvc 5.1.*) with Expressive Exception"
 
 
 dependencies {
-    compile project(":exception-core")
+    compile project(":expressive-exception-core")
     compile 'org.slf4j:slf4j-api:1.7.25'
     compileOnly('org.projectlombok:lombok:1.18.2')
     testCompileOnly('org.projectlombok:lombok:1.18.2')

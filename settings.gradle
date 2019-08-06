@@ -1,5 +1,5 @@
-rootProject.name = 'exception'
-include 'exception-core'
-include 'exception-spring-mvc'
-include 'exception-dubbo'
+rootProject.name = 'expressive-exception'
+include 'expressive-exception-core'
+include 'expressive-exception-spring-mvc'
+include 'expressive-exception-dubbo'
 
