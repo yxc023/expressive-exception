@@ -11,10 +11,8 @@ buildscript {
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: "maven-publish"
-    apply plugin: "signing"
 
+    apply plugin: 'java'
     group 'com.yangxiaochen'
 
     sourceCompatibility = 1.8
@@ -36,69 +34,7 @@ subprojects {
 
 
 
-    task sourceJar(type: Jar) {
-        archiveClassifier = 'sources'
-        from sourceSets.main.allJava
-    }
-    task javadocJar(type: Jar) {
-        archiveClassifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-    publishing {
-        publications {
-            oss(MavenPublication) {
-                pom {
-                    name = 'Expressive Exception'
-                    description = 'A More Expressive Exception Library'
-                    url = 'https://github.com/yxc023/exception'
-                    licenses {
-                        license {
-                            name = 'MIT License'
-                            url = 'https://mit-license.org/'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'yxc023'
-                            name = 'Michael Yang'
-                            email = 'yxc023@qq.com'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:git@github.com:yxc023/exception.git'
-                        developerConnection = 'scm:git:git@github.com:yxc023/exception.git'
-                        url = 'https://github.com/yxc023/exception'
-                    }
-                }
-                from components.java
-                artifact sourceJar
-                artifact javadocJar
 
-            }
-        }
-        repositories {
-            maven {
-                name "snapshot"
-                url "https://oss.sonatype.org/content/repositories/snapshots"
-                credentials {
-                    username property('oss.publish.username')
-                    password property('oss.publish.password')
-                }
-            }
-            maven {
-                name "release"
-                url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                credentials {
-                    username property('oss.publish.username')
-                    password property('oss.publish.password')
-                }
-            }
-        }
-    }
-
-    signing {
-        sign publishing.publications.oss
-    }
 
     tasks.withType(Javadoc) {
         failOnError false
