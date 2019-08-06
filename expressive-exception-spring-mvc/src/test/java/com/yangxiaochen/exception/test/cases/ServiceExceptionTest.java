@@ -2,9 +2,11 @@ package com.yangxiaochen.exception.test.cases;
 
 import com.yangxiaochen.exception.test.AbstractTestCase;
 import com.yangxiaochen.exception.test.application.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+@Slf4j
 public class ServiceExceptionTest extends AbstractTestCase {
 
 
@@ -15,6 +17,7 @@ public class ServiceExceptionTest extends AbstractTestCase {
                 .expectStatus().isOk()
                 .expectBody(Result.class).returnResult().getResponseBody();
 
+        log.info("result: {}", result);
         Assertions.assertThat(result.getCode()).isEqualTo("SERVICE_EXCEPTION");
         Assertions.assertThat(result.getTip()).isEqualTo("默认业务异常");
     }

@@ -12,6 +12,7 @@ public class FooService {
         throw new ServiceRuntimeException("default service exception")
                 .code("SERVICE_EXCEPTION")
                 .tip("默认业务异常")
-                .data(new HashMap<String, String>(){{put("key", "value");}});
+                .data(new HashMap<String, String>(){{put("key", "value");}})
+                .serviceLevel();
     }
 }

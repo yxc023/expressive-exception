@@ -1,8 +1,8 @@
 package com.yangxiaochen.exception.dubbo;
 
-import com.yangxiaochen.exception.core.BaseRichRuntimeException;
+import com.yangxiaochen.exception.core.BaseExprRuntimeException;
 
-public class ApiException extends BaseRichRuntimeException {
+public class ApiException extends BaseExprRuntimeException {
 
     public ApiException() {
     }
