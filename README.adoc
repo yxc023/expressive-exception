@@ -1,9 +1,13 @@
-= A Rich Exception Library
+= A More Expressive Exception Library
 杨晓辰
 2019-04-14
 :toc:
 :toclevels: 4
 :icons: font
+
+A More Expressive Exception Library.
+
+Build an exception use optional info as `code`, `message`, `tip`, `level`, `data`.
 
 一个能够包含更多信息的异常基础库. 是一套异常设计和处理的方法论的落地.
 
@@ -92,17 +96,8 @@ ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 
 === 引入
 ----
-repositories {
-    maven {
-        url "http://maven.aliyun.com/nexus/content/groups/public"
-    }
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-}
-
 dependencies {
-    compile 'com.yangxiaochen:exception-core:1.0.0-SNAPSHOT'
+    compile 'com.yangxiaochen:exception-core:1.0.0-RELEASE'
 }
 ----
 
@@ -134,6 +129,13 @@ public class MyException extends BaseRichException {
 === spring mvc
 
 ----
+
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+
 dependencies {
     compile 'com.yangxiaochen:exception-spring-mvc:1.0.0-SNAPSHOT'
 }
