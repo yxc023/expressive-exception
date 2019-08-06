@@ -92,8 +92,6 @@ ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 
 == USAGE
 
-##ONLY SNAPSHOT PROVIDE NOW.##
-
 === 引入
 ----
 dependencies {
@@ -128,8 +126,9 @@ public class MyException extends BaseRichException {
 
 === spring mvc
 
-----
+see link:exception-spring-mvc/src/main/java/com/yangxiaochen/exception/spring/ExceptionHandler.java[spring mvc exception handler]
 
+----
 repositories {
     maven {
         url "https://oss.sonatype.org/content/repositories/snapshots"
@@ -210,7 +209,7 @@ exceptionHandler.setErrorViewResolver((request, response, ex) -> {
 
 === dubbo
 
-TBD.
+see link:exception-dubbo/src/main/java/com/yangxiaochen/exception/dubbo/GlobalExceptionFilter.java[dubbo filter]
 
 == 意见收集
 
