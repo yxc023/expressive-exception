@@ -7,7 +7,7 @@
 
 A More Expressive Exception Library.
 
-Build an exception use optional fields: `code`, `message`, `tip`, `level`, `data`.
+Build an exception with optional fields: `code`, `message`, `tip`, `level`, `data`.
 
 一个能够包含更多信息的异常基础库. 是一套异常设计和处理的方法论的落地.
 
@@ -20,11 +20,11 @@ Build an exception use optional fields: `code`, `message`, `tip`, `level`, `data
 
 在多个业务系统实践中, 我做了一个总结, 一个好用的异常, 要包含以下几个数据:
 
-`message`:: 异常都会包含的消息
-`code`:: 异常编码
-`tip`:: 异常提示
-`data`:: 可选, 异常携带的数据
-`level`:: 可选, 异常级别
+* `message` - 异常都会包含的消息
+* `code` - 异常编码
+* `tip` - 异常提示
+* `data` - 可选, 异常携带的数据
+* `level` - 可选, 异常级别
 
 下面对每一项进行详细说明.
 
