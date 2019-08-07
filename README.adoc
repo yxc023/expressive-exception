@@ -126,7 +126,7 @@ public class MyException extends BaseRichException {
 
 === spring mvc
 
-see link:exception-spring-mvc/src/main/java/com/yangxiaochen/exception/spring/ExceptionHandler.java[spring mvc exception handler]
+see link:expressive-exception-spring-mvc/src/main/java/com/yangxiaochen/exception/spring/ExceptionHandler.java[spring mvc exception handler]
 
 ----
 repositories {
@@ -209,7 +209,7 @@ exceptionHandler.setErrorViewResolver((request, response, ex) -> {
 
 === dubbo
 
-see link:exception-dubbo/src/main/java/com/yangxiaochen/exception/dubbo/GlobalExceptionFilter.java[dubbo filter]
+see link:expressive-exception-dubbo/src/main/java/com/yangxiaochen/exception/dubbo/GlobalExceptionFilter.java[dubbo filter]
 
 == 意见收集
 
