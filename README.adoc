@@ -95,7 +95,7 @@ ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 === 引入
 ----
 dependencies {
-    compile 'com.yangxiaochen:exception-core:1.0.0-RELEASE'
+    compile 'com.yangxiaochen:expressive-exception-core:1.1.0-RELEASE'
 }
 ----
 
@@ -108,10 +108,10 @@ public class MyException extends Exception implements HasTip, HasCode, HasData, 
 }
 ----
 
-为了方便定义异常类, 提供了两个抽象类 `BaseRichException`, `BaseRichRuntimeException`, 可以直接继承这两个类:
+为了方便定义异常类, 提供了两个抽象类 `BaseExprException`, `BaseExprRuntimeException`, 可以直接继承这两个类:
 
 ----
-public class MyException extends BaseRichException {
+public class MyException extends BaseExprException {
     ...
 }
 ----
@@ -136,7 +136,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.yangxiaochen:exception-spring-mvc:1.0.0-SNAPSHOT'
+    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.1.0-SNAPSHOT'
 }
 ----
 
