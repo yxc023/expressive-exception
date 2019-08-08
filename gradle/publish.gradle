@@ -30,9 +30,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git@github.com:yxc023/exception.git'
-                    developerConnection = 'scm:git:git@github.com:yxc023/exception.git'
-                    url = 'https://github.com/yxc023/exception'
+                    connection = 'scm:git:git://github.com/yxc023/expressive-exception.git'
+                    developerConnection = 'scm:git:git://github.com/yxc023/expressive-exception.git'
+                    url = 'https://github.com/yxc023/expressive-exception'
                 }
             }
             from components.java
