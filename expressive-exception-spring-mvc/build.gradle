@@ -2,7 +2,7 @@ description = "Exception handler for spring boot 2.1.* (spring mvc 5.1.*) with E
 
 
 dependencies {
-    implementation project(":expressive-exception-core")
+    api project(":expressive-exception-core")
     implementation 'org.slf4j:slf4j-api:1.7.25'
     compileOnly('org.projectlombok:lombok:1.18.2')
     testCompileOnly('org.projectlombok:lombok:1.18.2')
