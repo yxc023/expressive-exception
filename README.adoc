@@ -95,7 +95,7 @@ ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 === 引入
 ----
 dependencies {
-    compile 'com.yangxiaochen:expressive-exception-core:1.1.2-RELEASE'
+    compile 'com.yangxiaochen:expressive-exception-core:1.2.0-RELEASE'
 }
 ----
 
@@ -131,7 +131,7 @@ see link:expressive-exception-spring-mvc/src/main/java/com/yangxiaochen/exceptio
 ----
 
 dependencies {
-    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.1.2-RELEASE'
+    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.2.0-RELEASE'
 }
 ----
 
