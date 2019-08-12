@@ -95,7 +95,7 @@ ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 === 引入
 ----
 dependencies {
-    compile 'com.yangxiaochen:expressive-exception-core:1.1.0-RELEASE'
+    compile 'com.yangxiaochen:expressive-exception-core:1.1.2-RELEASE'
 }
 ----
 
@@ -129,14 +129,9 @@ public class MyException extends BaseExprException {
 see link:expressive-exception-spring-mvc/src/main/java/com/yangxiaochen/exception/spring/ExceptionHandler.java[spring mvc exception handler]
 
 ----
-repositories {
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-}
 
 dependencies {
-    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.1.0-SNAPSHOT'
+    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.1.2-RELEASE'
 }
 ----
 
