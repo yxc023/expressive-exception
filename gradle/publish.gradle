@@ -15,7 +15,7 @@ publishing {
             pom {
                 name = "Expressive Exception: ${project.name}"
                 description = "${project.description}"
-                url = 'https://github.com/yxc023/exception'
+                url = 'https://github.com/yxc023/expressive-exception'
                 licenses {
                     license {
                         name = 'MIT License'
