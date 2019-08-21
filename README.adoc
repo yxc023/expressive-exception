@@ -90,12 +90,14 @@ ORDER_HAD_PAYED - 订单状态异常: 已经支付过了
 * SERVICE_LEVEL
 * ERROR_LEVEL
 
+
+
 == USAGE
 
 === 引入
 ----
 dependencies {
-    compile 'com.yangxiaochen:expressive-exception-core:1.2.0-RELEASE'
+    compile 'com.yangxiaochen:expressive-exception-core:1.2.1-RELEASE'
 }
 ----
 
@@ -116,6 +118,13 @@ public class MyException extends BaseExprException {
 }
 ----
 
+打印出的异常 log 例子:
+
+----
+com.yangxiaochen.exception.test.application.exception.ServiceRuntimeException: [SERVICE_EXCEPTION] default service exception, tip: 默认业务异常, ctxVars: {fooId=1002, time=Wed Aug 21 18:17:26 CST 2019}
+...
+----
+
 === 拓展异常 level
 
 可以通过实现 `ExceptionLevel` 来定义新的异常 level.
@@ -131,7 +140,7 @@ see link:expressive-exception-spring-mvc/src/main/java/com/yangxiaochen/exceptio
 ----
 
 dependencies {
-    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.2.0-RELEASE'
+    compile 'com.yangxiaochen:expressive-exception-spring-mvc:1.2.1-RELEASE'
 }
 ----
 
