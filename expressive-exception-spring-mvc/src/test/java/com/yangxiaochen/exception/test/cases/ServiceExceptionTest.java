@@ -24,7 +24,14 @@ public class ServiceExceptionTest extends AbstractTestCase {
 
 
     @Test
-    public void test() {
+    public void exampleTestExpectException() {
+        Result result = this.webClient.get().uri("/getFooExpectException").header("Accept", "application/json")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Result.class).returnResult().getResponseBody();
 
+        log.info("result: {}", result);
+        Assertions.assertThat(result.getCode()).isEqualTo("SERVICE_EXCEPTION");
+        Assertions.assertThat(result.getTip()).isEqualTo("默认业务异常");
     }
 }

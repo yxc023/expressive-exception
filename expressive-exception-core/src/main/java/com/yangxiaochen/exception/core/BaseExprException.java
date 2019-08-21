@@ -88,24 +88,12 @@ public abstract class BaseExprException extends Exception implements HasTip, Has
 
     @Override
     public String getMessage() {
-        if (ctxVars != null && ctxVars.size() > 0) {
-            StringBuilder s = new StringBuilder();
-            s.append(super.getMessage()).append(" - ");
-            int size = ctxVars.entrySet().size();
-            int appendCount = 0;
-            for (Map.Entry<String, String> entry : ctxVars.entrySet()) {
-                s.append(entry.getKey()).append("=").append(entry.getValue());
-                if (++appendCount < size) {
-                    s.append(", ");
-                }
-            }
-            return s.toString();
-        }
-        return super.getMessage();
+        return BaseExprException.buildMessage(code, super.getMessage(), tip, ctxVars);
     }
 
     /**
      * set context variable to exception, then these variables will append to exception message.
+     *
      * @param key
      * @param value
      * @return
@@ -116,5 +104,34 @@ public abstract class BaseExprException extends Exception implements HasTip, Has
         }
         ctxVars.putIfAbsent(key, value == null ? "null" : value.toString());
         return this;
+    }
+
+
+    static String buildMessage(String code, String message, String tip, Map<String, String> ctxVars) {
+        StringBuilder s = new StringBuilder();
+
+        if (code != null) {
+            s.append("[").append(code).append("] ");
+        }
+
+        s.append(message);
+
+        if (tip != null) {
+            s.append(", tip: ").append(tip);
+        }
+
+        if (ctxVars != null && ctxVars.size() > 0) {
+            s.append(", ctxVars: {");
+            int size = ctxVars.entrySet().size();
+            int appendCount = 0;
+            for (Map.Entry<String, String> entry : ctxVars.entrySet()) {
+                s.append(entry.getKey()).append("=").append(entry.getValue());
+                if (++appendCount < size) {
+                    s.append(", ");
+                }
+            }
+            s.append("}");
+        }
+        return s.toString();
     }
 }

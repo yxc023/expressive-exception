@@ -88,20 +88,7 @@ public abstract class BaseExprRuntimeException extends RuntimeException implemen
 
     @Override
     public String getMessage() {
-        if (ctxVars != null && ctxVars.size() > 0) {
-            StringBuilder s = new StringBuilder();
-            s.append(super.getMessage()).append(" - ");
-            int size = ctxVars.entrySet().size();
-            int appendCount = 0;
-            for (Map.Entry<String, String> entry : ctxVars.entrySet()) {
-                s.append(entry.getKey()).append("=").append(entry.getValue());
-                if (++appendCount < size) {
-                    s.append(", ");
-                }
-            }
-            return s.toString();
-        }
-        return super.getMessage();
+        return BaseExprException.buildMessage(code, super.getMessage(), tip, ctxVars);
     }
 
     /**

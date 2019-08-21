@@ -1,6 +1,7 @@
 package com.yangxiaochen.exception.test.application;
 
 
+import com.yangxiaochen.exception.core.BaseExprException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,12 @@ public class FooController {
     @GetMapping("/getFoo")
     public Result getFoo() {
         fooService.withDefaultRichException();
+        return null;
+    }
+
+    @GetMapping("/getFooExpectException")
+    public Result getFooExpectException() throws BaseExprException {
+        fooService.withDefaultExpectRichException();
         return null;
     }
 }
