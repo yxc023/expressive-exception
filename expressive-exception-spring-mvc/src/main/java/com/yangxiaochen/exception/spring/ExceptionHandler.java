@@ -28,14 +28,12 @@ public class ExceptionHandler implements HandlerExceptionResolver, Ordered {
 
 
     public ExceptionHandler() {
-        List<ExceptionTranslator> exceptionTranslators = new ArrayList<>();
-        exceptionTranslators.add(new SpringMvcExceptionTranslator());
+        this.exceptionTranslators = new ArrayList<>();
+        this.exceptionTranslators.add(new SpringMvcExceptionTranslator());
 
-        List<String> pathPrefixs = new ArrayList<>();
-        pathPrefixs.add("/");
+        this.pathPrefixs = new ArrayList<>();
+        this.pathPrefixs.add("/");
 
-        this.exceptionTranslators = exceptionTranslators;
-        this.pathPrefixs = pathPrefixs;
     }
 
     @Override
