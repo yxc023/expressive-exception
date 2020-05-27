@@ -31,7 +31,7 @@ public class SpringMvcExceptionTranslator implements ExceptionTranslator {
         }
 
         if (e instanceof HttpMediaTypeException || e instanceof HttpMessageConversionException) {
-            return new WebApiException("请求数据格式错误：" + e.getMessage(), e);
+            return new WebApiException("请求数据格式错", e);
         }
 
         if (e instanceof MethodArgumentNotValidException) {
@@ -43,7 +43,7 @@ public class SpringMvcExceptionTranslator implements ExceptionTranslator {
         }
 
         if (e instanceof IllegalArgumentException) {
-            return new WebApiException("请求数据验证有错误：" + e.getMessage(), e);
+            return new WebApiException("请求数据验证有错误", e);
         }
 
         if (e instanceof ServletException) {

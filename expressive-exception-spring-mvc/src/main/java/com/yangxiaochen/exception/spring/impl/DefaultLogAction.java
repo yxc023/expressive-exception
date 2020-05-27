@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 
 public class DefaultLogAction implements LogAction {
 
+    public static final String HTTP_FAIL_FOR = "http fail for {}";
     private static Logger logger = LoggerFactory.getLogger(DefaultLogAction.class);
 
     @Override
     public void log(HttpServletRequest request, Exception ex) {
-
         if (ex instanceof HasLevel && ((HasLevel) ex).getLevel() == ExceptionLevels.SERVICE) {
-            logger.warn(ex.getLocalizedMessage(), ex);
+            logger.warn(HTTP_FAIL_FOR, request.getRequestURI(), ex);
         } else if (ex instanceof HasLevel && ((HasLevel) ex).getLevel() == ExceptionLevels.ERROR) {
-            logger.error(ex.getLocalizedMessage(), ex);
+            logger.error(HTTP_FAIL_FOR, request.getRequestURI(), ex);
         } else {
-            logger.error(ex.getLocalizedMessage(), ex);
+            logger.error(HTTP_FAIL_FOR, request.getRequestURI(), ex);
         }
     }
 
