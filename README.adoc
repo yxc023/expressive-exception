@@ -10,6 +10,35 @@ A More Expressive Exception Library.
 Build an exception with optional fields: `code`, `message`, `tip`, `level`, `data`.
 
 一个能够包含更多信息的异常基础库. 是一套异常设计和处理的方法论的落地.
+== 如何抛出一个异常
+
+. 继承 `BaseExprException`
+----
+public class ServiceException extends BaseExprException {
+    // ...
+}
+----
+
+. 抛出个富有表达性的异常吧
+----
+throw new ServiceException("Order not found")
+                .code("ORDER_NOT_FOUND")
+                .tip("订单不存在, 请确认订单号是否正确")
+                .data(new HashMap<String, String>(){{put("key", "value");}})
+                .var("orderId", 1002)
+                .var("time", new Date())
+                .serviceLevel();
+----
+
+. 异常打印出来信息是这样 
+----
+com.yangxiaochen.exception.test.application.exception.ServiceRuntimeException: [ORDER_NOT_FOUND] Order not found, tip: 订单不存在, 请确认订单号是否正确, ctxVars: {orderId=1002, time=Thu Feb 25 17:22:09 CST 2021}
+----
+
+. 如果 web 层捕获这个异常, 我们可以:
+.. `code: ORDER_NOT_FOUND` 作为返回 code - 给程序读
+.. `tip: 订单不存在, 请确认订单号是否正确` 作为弹出提示 - 给用户读
+.. `ctxVars: orderId=1002` 和 `message: Order not found` 为排查问题提供更多的信息 - 给程序员读
 
 == 动机
 在业务项目实践中, 异常经常用来传递一些业务错误或者警告.
