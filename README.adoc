@@ -10,6 +10,7 @@ A More Expressive Exception Library.
 Build an exception with optional fields: `code`, `message`, `tip`, `level`, `data`.
 
 一个能够包含更多信息的异常基础库. 是一套异常设计和处理的方法论的落地.
+
 == 如何抛出一个异常
 
 . 继承 `BaseExprException`
